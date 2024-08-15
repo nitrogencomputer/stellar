@@ -146,6 +146,22 @@ json rpc::RPC::GetTransaction(int txId, std::string txHash)
     return eventResp;
 }
 
+json rpc::RPC::GetTransactions(int id, int startLedger, int pagelimit)
+{
+    json params;
+    params["jsonrpc"] ="2.0";
+    params["id"] = id;
+    params["method"] = "getTransactions";
+    params["params"] = {"startLedger",startLedger};
+    params["params"]["pagination"] = {"limit",pagelimit};
+
+    Stellar* stellar = new Stellar();
+    stellar->Log("GetTransactions_Payload", params);
+    auto getTransactions = stellar->stellar_forward_call(baseurl, params);
+    auto txResp = json::parse(getTransactions);
+    return txResp;
+}
+
 json rpc::RPC::GetLedgerEntries(int id, json LedgerParams)
 {
     /* the parameters are fed in json format */

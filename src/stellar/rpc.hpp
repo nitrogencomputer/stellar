@@ -46,6 +46,9 @@ namespace rpc {
         /* Get Transaction */
         json GetTransaction(int txId, std::string txHash);
 
+        /* Get Transactions */
+        json GetTransactions(int id, int startLedger,int pagelimit);
+
         /* Get Ledger Entries */
         json GetLedgerEntries(int id, json params);
     };
