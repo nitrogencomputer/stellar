@@ -146,6 +146,11 @@ json rpc::RPC::GetTransaction(int txId, std::string txHash)
     return eventResp;
 }
 
+/* The getTransactions method return a detailed list of transactions 
+    starting from the user specified starting point that you can paginate 
+    as long as the pages fall within the history 
+    retention of their corresponding RPC provider.*/
+
 json rpc::RPC::GetTransactions(int id, int startLedger, int pagelimit)
 {
     json params;
@@ -160,6 +165,25 @@ json rpc::RPC::GetTransactions(int id, int startLedger, int pagelimit)
     auto getTransactions = stellar->stellar_forward_call(baseurl, params);
     auto txResp = json::parse(getTransactions);
     return txResp;
+}
+
+/* sends a transaction to the stellar blockchain 
+    this is done with the transaction hash passed
+    as a function parameter. the txHash is a serialised
+    base64 string which is required to be signed already */
+    
+json rpc::RPC::SendTransactions(int id, std::string txHash){
+    json params;
+    params["jsonrpc"] ="2.0";
+    params["id"] = id;
+    params["method"] = "sendTransaction";
+    params["params"] = {"transaction",txHash};
+
+    Stellar* stellar = new Stellar();
+    stellar->Log("sendTransaction_Payload", params);
+    auto sendTransaction = stellar->stellar_forward_call(baseurl, params);
+    auto sendTxResp = json::parse(sendTransaction);
+    return sendTxResp; 
 }
 
 json rpc::RPC::GetLedgerEntries(int id, json LedgerParams)

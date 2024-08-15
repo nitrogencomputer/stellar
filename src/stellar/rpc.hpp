@@ -49,6 +49,10 @@ namespace rpc {
         /* Get Transactions */
         json GetTransactions(int id, int startLedger,int pagelimit);
 
+        /* send Transactions */
+        /* send a transaction on stellar blockchain */
+        json SendTransactions(int id, std::string txHash);
+
         /* Get Ledger Entries */
         json GetLedgerEntries(int id, json params);
     };
