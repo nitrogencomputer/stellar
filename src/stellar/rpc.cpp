@@ -1,5 +1,5 @@
 #include "rpc.hpp"
-#include "./base.hpp"
+#include "../base.hpp"
 
 /* we can allow up to 5 header values to be passed */
 static int max_header = 5;
@@ -20,12 +20,6 @@ json rpc::RPC::GetEvents(int id, int startledger, std::vector<std::unordered_map
     params["params"]["filters"] = {{"type", "contract"}, {"contractIds", contractIds}, {"topics", topics}};
     params["params"]["pagination"] = {"limit", pagelimit};
 
-    /* from the max_header initialised set the headers */
-    /* let each header value feed a const char* value */
-    const char **headers = (const char **)new char[max_header];
-    headers[0] = "Content-Type:application/json";
-    headers[1] = "Accept:application/json";
-
     /* object initialization from base class */
     /* to call related functions for calls */
     Stellar *stellar = new Stellar();
@@ -33,7 +27,7 @@ json rpc::RPC::GetEvents(int id, int startledger, std::vector<std::unordered_map
     /* we're using the sample http client */
     /* its a forwarded call to the stellar chain */
     /* and then we parse the string data returned */
-    auto getEvents = stellar->stellar_forward_call(baseurl, headers, params);
+    auto getEvents = stellar->stellar_forward_call(baseurl, params);
     auto eventResp = json::parse(getEvents);
     return eventResp;
 }
@@ -48,12 +42,6 @@ json rpc::RPC::GetFeeStats(int id)
     params["jsonrpc"] = "2.0";
     params["method"] = "getFeeStats";
 
-    /* from the max_header initialised set the headers */
-    /* let each header value feed a const char* value */
-    const char **headers = (const char **)new char[max_header];
-    headers[0] = "Content-Type:application/json";
-    headers[1] = "Accept:application/json";
-
     /* object initialization from base class */
     /* to call related functions for calls */
     Stellar *stellar = new Stellar();
@@ -61,7 +49,7 @@ json rpc::RPC::GetFeeStats(int id)
     /* we're using the sample http client */
     /* its a forwarded call to the stellar chain */
     /* and then we parse the string data returned */
-    auto getFeeStats = stellar->stellar_forward_call(baseurl, headers, params);
+    auto getFeeStats = stellar->stellar_forward_call(baseurl, params);
     auto eventResp = json::parse(getFeeStats);
     return eventResp;
 }
@@ -76,11 +64,6 @@ json rpc::RPC::GetHealth(int id)
     params["jsonrpc"] = "2.0";
     params["method"] = "getHealth";
 
-    /* from the max_header initialised set the headers */
-    /* let each header value feed a const char* value */
-    const char **headers = (const char **)new char[max_header];
-    headers[0] = "Content-Type:application/json";
-    headers[1] = "Accept:application/json";
 
     /* object initialization from base class */
     /* to call related functions for calls */
@@ -89,7 +72,7 @@ json rpc::RPC::GetHealth(int id)
     /* we're using the sample http client */
     /* its a forwarded call to the stellar chain */
     /* and then we parse the string data returned */
-    auto getHealth = stellar->stellar_forward_call(baseurl, headers, params);
+    auto getHealth = stellar->stellar_forward_call(baseurl, params);
     auto eventResp = json::parse(getHealth);
     return eventResp;
 }
@@ -104,12 +87,6 @@ json rpc::RPC::GetLatestLedger(int id)
     params["jsonrpc"] = "2.0";
     params["method"] = "getLatestLedger";
 
-    /* from the max_header initialised set the headers */
-    /* let each header value feed a const char* value */
-    const char **headers = (const char **)new char[max_header];
-    headers[0] = "Content-Type:application/json";
-    headers[1] = "Accept:application/json";
-
     /* object initialization from base class */
     /* to call related functions for calls */
     Stellar *stellar = new Stellar();
@@ -117,7 +94,7 @@ json rpc::RPC::GetLatestLedger(int id)
     /* we're using the sample http client */
     /* its a forwarded call to the stellar chain */
     /* and then we parse the string data returned */
-    auto getLatestLedger = stellar->stellar_forward_call(baseurl, headers, params);
+    auto getLatestLedger = stellar->stellar_forward_call(baseurl, params);
     auto eventResp = json::parse(getLatestLedger);
     return eventResp;
 }
@@ -132,21 +109,16 @@ json rpc::RPC::GetNetwork(int id)
     params["jsonrpc"] = "2.0";
     params["method"] = "getNetwork";
 
-    /* from the max_header initialised set the headers */
-    /* let each header value feed a const char* value */
-    const char **headers = (const char **)new char[max_header];
-    headers[0] = "Content-Type:application/json";
-    headers[1] = "Accept:application/json";
-
     /* object initialization from base class */
     /* to call related functions for calls */
     Stellar *stellar = new Stellar();
-
+    stellar->Log("GetNetwork_Payload", params);
     /* we're using the sample http client */
     /* its a forwarded call to the stellar chain */
     /* and then we parse the string data returned */
-    auto getNetwork = stellar->stellar_forward_call(baseurl, headers, params);
+    auto getNetwork = stellar->stellar_forward_call(baseurl, params);
     auto eventResp = json::parse(getNetwork);
+    stellar->Log("GetNetworkEvent_Resp",eventResp);
     return eventResp;
 }
 
@@ -162,12 +134,6 @@ json rpc::RPC::GetTransaction(int txId, std::string txHash)
     params["method"] = "getTransaction";
     params["params"] = {"hash", txHash};
 
-    /* from the max_header initialised set the headers */
-    /* let each header value feed a const char* value */
-    const char **headers = (const char **)new char[max_header];
-    headers[0] = "Content-Type:application/json";
-    headers[1] = "Accept:application/json";
-
     /* object initialization from base class */
     /* to call related functions for calls */
     Stellar *stellar = new Stellar();
@@ -175,7 +141,7 @@ json rpc::RPC::GetTransaction(int txId, std::string txHash)
     /* we're using the sample http client */
     /* its a forwarded call to the stellar chain */
     /* and then we parse the string data returned */
-    auto getTransaction = stellar->stellar_forward_call(baseurl, headers, params);
+    auto getTransaction = stellar->stellar_forward_call(baseurl, params);
     auto eventResp = json::parse(getTransaction);
     return eventResp;
 }
@@ -191,12 +157,6 @@ json rpc::RPC::GetLedgerEntries(int id, json LedgerParams)
     params["method"] = "getLedgerEntries";
     params["params"] = LedgerParams;
 
-    /* from the max_header initialised set the headers */
-    /* let each header value feed a const char* value */
-    const char **headers = (const char **)new char[max_header];
-    headers[0] = "Content-Type:application/json";
-    headers[1] = "Accept:application/json";
-
     /* object initialization from base class */
     /* to call related functions for calls */
     Stellar *stellar = new Stellar();
@@ -204,7 +164,7 @@ json rpc::RPC::GetLedgerEntries(int id, json LedgerParams)
     /* we're using the sample http client */
     /* its a forwarded call to the stellar chain */
     /* and then we parse the string data returned */
-    auto getLedgerEntries = stellar->stellar_forward_call(baseurl, headers, params);
+    auto getLedgerEntries = stellar->stellar_forward_call(baseurl, params);
     auto eventResp = json::parse(getLedgerEntries);
     return eventResp;
 }

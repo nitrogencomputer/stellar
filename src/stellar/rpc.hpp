@@ -1,3 +1,6 @@
+#ifndef RPC_HPP 
+#define RPC_HPP 
+
 #include <iostream>
 #include <cstring>
 #include <vector>
@@ -47,3 +50,5 @@ namespace rpc {
         json GetLedgerEntries(int id, json params);
     };
 }
+
+#endif
