@@ -19,20 +19,24 @@ size_t Stellar::stellar_call_back(void *contents, size_t content_size, size_t us
     return real_size;
 }
 
-void Stellar::stellar_forward_call(std::string &url, const char** hparams, std::string params)
+std::string Stellar::stellar_forward_call(std::string &url, const char** hparams, json params)
 {
     CURL* curl =  curl_easy_init();
     std::string buffer;
+    json payload = params;
+    std::string payload_sparse = payload.dump();
     struct curl_slist * headers =  nullptr;
     for(int i = 0; i < sizeof(hparams); ++i){
         headers = curl_slist_append(headers, hparams[i]);
     }
     if(!curl) perror("cannot initialise curl");
     curl_easy_setopt(curl, CURLOPT_URL, convert_string(url));
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, convert_string(params));
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, payload_sparse.c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, stellar_call_back);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, convert_string(buffer));
+    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     CURLcode res = curl_easy_perform(curl);
     if(res != CURLE_OK) perror("Bad response from server");
     curl_easy_cleanup(curl);
+    return buffer;
 }
