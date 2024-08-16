@@ -33,6 +33,19 @@ struct GetEventsDataResponse{
     GetEventDataResult result;
 };
 
+struct GetNetworkDataResult {
+    std::string friendbotUrl;
+    std::string passphrase;
+    uint32_t protocolVersion;
+};
+
+struct GetNetworkDataResponse {
+    std::string jsonrpc;
+    uint32_t id;
+    GetNetworkDataResult result;
+};
+
+
 void from_json(const json& j, GetEventsDataEvents& e) {
     j.at("type").get_to(e.type);
     j.at("ledger").get_to(e.ledger);
@@ -57,11 +70,23 @@ void from_json(const json& j, GetEventsDataResponse& r) {
     j.at("result").get_to(r.result);
 }
 
+void from_json(const json& j, GetNetworkDataResult r) {
+    j.at("friendbotUrl").get_to(r.friendbotUrl);
+    j.at("passphrase").get_to(r.passphrase);
+    j.at("protocolVersion").get_to(r.protocolVersion);
+} 
+
+void from_json(const json& j, GetNetworkDataResponse& r) {
+    j.at("jsonrpc").get_to(r.jsonrpc);
+    j.at("id").get_to(r.id);
+    j.at("result").get_to(r.result);
+}
 
 class Response {
     public:
     Response();
     GetEventsDataResponse GetEventsResponse(json getEvents); 
+    GetNetworkDataResponse GetNetworkResponse(json getNetwork);
     ~Response();  
 };
 
