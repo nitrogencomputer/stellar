@@ -45,6 +45,52 @@ struct GetNetworkDataResponse {
     GetNetworkDataResult result;
 };
 
+struct GetFeeStatsResult {
+    std::vector<GetSorobanInclusionFee> sorobanInclusionFee;
+};
+
+struct GetSorobanInclusionFee {
+    std::string max;
+    std::string min;
+    std::string mode;
+    std::string p10;
+    std::string p20;
+    std::string p30;
+    std::string p40;
+    std::string p50;
+    std::string p60;
+    std::string p70;
+    std::string p80;
+    std::string p90;
+    std::string p95;
+    std::string p99;
+    std::string transactionCount;
+    uint32_t ledgerCount;
+};
+
+struct GetFeeStats {
+    std::string jsonrpc;
+    uint32_t id;
+    GetFeeStatsResult result;
+};
+
+void from_json(const json& j, GetSorobanInclusionFee& e){
+    j.at("max").get_to(e.max);
+    j.at("min").get_to(e.min);
+    j.at("p10").get_to(e.p10);
+    j.at("p20").get_to(e.p20);
+    j.at("p30").get_to(e.p30);
+    j.at("p40").get_to(e.p40);
+    j.at("p50").get_to(e.p50);
+    j.at("p60").get_to(e.p60);
+    j.at("p70").get_to(e.p70);
+    j.at("p80").get_to(e.p80);
+    j.at("p90").get_to(e.p90);
+    j.at("p95").get_to(e.p95);
+    j.at("p99").get_to(e.p99);
+    j.at("transactionCount").get_to(e.transactionCount);
+    j.at("ledgerCount").get_to(e.ledgerCount);
+}
 
 void from_json(const json& j, GetEventsDataEvents& e) {
     j.at("type").get_to(e.type);
