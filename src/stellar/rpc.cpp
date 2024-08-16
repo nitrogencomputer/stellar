@@ -27,7 +27,7 @@ GetEventsDataResponse rpc::RPC::GetEvents(int id, int startledger, std::vector<s
     return eventsDataResponse;
 }
 
-json rpc::RPC::GetFeeStats(int id)
+GetFeeStats rpc::RPC::GetFeeStats(int id)
 {
     json params;
     params["id"] = id;
@@ -40,8 +40,9 @@ json rpc::RPC::GetFeeStats(int id)
         stellar->Log("empty data returned", {});
         return {};
     }
-    auto eventResp = json::parse(getFeeStats);
-    return eventResp;
+    auto feeStatsResp = json::parse(getFeeStats); Response response;
+    auto feeStatsData = response.GetFeeStatsResponse(feeStatsResp);
+    return feeStatsData;
 }
 
 json rpc::RPC::GetHealth(int id)

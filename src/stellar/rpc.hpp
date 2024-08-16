@@ -34,7 +34,7 @@ namespace rpc {
                         std::string>>filters, std::vector<std::string> contractIds,std::vector<std::vector<std::string>> topics, int pagelimit);
 
         /* Get Fee stats */
-        json GetFeeStats(int id);
+        GetFeeStats GetFeeStats(int id);
 
         /* Get Health */
         json GetHealth(int id);
