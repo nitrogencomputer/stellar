@@ -5,6 +5,8 @@
 #include <cstring>
 #include <vector>
 #include <unordered_map>
+#include <stdexcept>
+
 #include "/Users/mac/Desktop/nitrogen/stellar-sc/json/include/nlohmann/json.hpp"
 
 using json = nlohmann::json;

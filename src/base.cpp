@@ -14,7 +14,7 @@ size_t Stellar::stellar_call_back(void *contents, size_t content_size, size_t us
     return real_size;
 }
 
-std::string Stellar::stellar_forward_call(std::string &url, json params)
+std::optional<std::string> Stellar::stellar_forward_call(std::string &url, json params)
 {
     CURL* curl =  curl_easy_init();
     std::string buffer;
@@ -24,14 +24,14 @@ std::string Stellar::stellar_forward_call(std::string &url, json params)
     struct curl_slist * headers =  nullptr;
     headers = curl_slist_append(headers, "Content-Type:application/json");
     
-    if(!curl) perror("cannot initialise curl");
+    if(!curl) throw std::runtime_error("cannot initialise curl");
     curl_easy_setopt(curl, CURLOPT_URL, convert_string(url));
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, payload_sparse.c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, stellar_call_back);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, convert_string(buffer));
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     CURLcode res = curl_easy_perform(curl);
-    if(res != CURLE_OK) perror("Bad response from server");
+    if(res != CURLE_OK) throw std::runtime_error("Bad response from server");
     curl_easy_cleanup(curl);
     return buffer;
 }
