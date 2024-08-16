@@ -30,7 +30,7 @@ namespace rpc {
         friend std::istream& operator >> (std::istream& stream, const RPC& stellar_rpc);
 
         /* Get Events from stellar soroban smart contract*/
-        json GetEvents(int id, int startledger, std::vector<std::unordered_map<std::string, 
+        GetEventsDataResponse GetEvents(int id, int startledger, std::vector<std::unordered_map<std::string, 
                         std::string>>filters, std::vector<std::string> contractIds,std::vector<std::vector<std::string>> topics, int pagelimit);
 
         /* Get Fee stats */
@@ -43,7 +43,7 @@ namespace rpc {
         json GetLatestLedger(int id);
 
         /* Get Network */
-        json GetNetwork(int id);
+        GetNetworkDataResponse GetNetwork(int id);
 
         /* Get Transaction */
         json GetTransaction(int txId, std::string txHash);

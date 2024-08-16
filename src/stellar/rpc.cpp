@@ -1,8 +1,9 @@
 #include "rpc.hpp"
+#include "rpc_resp.hpp"
 #include "../base.hpp"
 
 static int max_header_values = 5;
-json rpc::RPC::GetEvents(int id, int startledger, std::vector<std::unordered_map<std::string, std::string>> filters,
+GetEventsDataResponse rpc::RPC::GetEvents(int id, int startledger, std::vector<std::unordered_map<std::string, std::string>> filters,
                          std::vector<std::string> contractIds, std::vector<std::vector<std::string>> topics, int pagelimit)
 {
     json params;
@@ -21,8 +22,9 @@ json rpc::RPC::GetEvents(int id, int startledger, std::vector<std::unordered_map
         stellar->Log("empty data returned",{});
         return {};
     }
-    auto eventResp = json::parse(getEvents);
-    return eventResp;
+    auto eventResp = json::parse(getEvents); Response response;
+    auto eventsDataResponse = response.GetEventsResponse(eventResp);
+    return eventsDataResponse;
 }
 
 json rpc::RPC::GetFeeStats(int id)
@@ -76,7 +78,7 @@ json rpc::RPC::GetLatestLedger(int id)
     return eventResp;
 }
 
-json rpc::RPC::GetNetwork(int id)
+GetNetworkDataResponse rpc::RPC::GetNetwork(int id)
 {
     json params;
     params["id"] = id;
@@ -90,9 +92,10 @@ json rpc::RPC::GetNetwork(int id)
         stellar->Log("empty data returned", {});
         return {};
     }
-    auto eventResp = json::parse(getNetwork);
+    auto eventResp = json::parse(getNetwork); Response response;
     stellar->Log("GetNetworkEvent_Resp",eventResp);
-    return eventResp;
+    auto NetworkDataResponse = response.GetNetworkResponse(eventResp);
+    return NetworkDataResponse;
 }
 
 json rpc::RPC::GetTransaction(int txId, std::string txHash)
