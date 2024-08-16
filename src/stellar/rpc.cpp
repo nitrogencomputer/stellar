@@ -4,7 +4,7 @@
 
 static int max_header_values = 5;
 GetEventsDataResponse rpc::RPC::GetEvents(int id, int startledger, std::vector<std::unordered_map<std::string, std::string>> filters,
-                         std::vector<std::string> contractIds, std::vector<std::vector<std::string>> topics, int pagelimit)
+                                          std::vector<std::string> contractIds, std::vector<std::vector<std::string>> topics, int pagelimit)
 {
     json params;
     params["id"] = id;
@@ -18,11 +18,13 @@ GetEventsDataResponse rpc::RPC::GetEvents(int id, int startledger, std::vector<s
     Stellar *stellar = new Stellar();
 
     auto getEvents = stellar->stellar_forward_call(baseurl, params);
-    if(getEvents == std::nullopt){
-        stellar->Log("empty data returned",{});
+    if (getEvents == std::nullopt)
+    {
+        stellar->Log("empty data returned", {});
         return {};
     }
-    auto eventResp = json::parse(getEvents); Response response;
+    auto eventResp = json::parse(getEvents);
+    Response response;
     auto eventsDataResponse = response.GetEventsResponse(eventResp);
     return eventsDataResponse;
 }
@@ -36,11 +38,13 @@ GetFeeStats rpc::RPC::GetFeeStats(int id)
 
     Stellar *stellar = new Stellar();
     auto getFeeStats = stellar->stellar_forward_call(baseurl, params);
-    if(getFeeStats == std::nullopt){
+    if (getFeeStats == std::nullopt)
+    {
         stellar->Log("empty data returned", {});
         return {};
     }
-    auto feeStatsResp = json::parse(getFeeStats); Response response;
+    auto feeStatsResp = json::parse(getFeeStats);
+    Response response;
     auto feeStatsData = response.GetFeeStatsResponse(feeStatsResp);
     return feeStatsData;
 }
@@ -54,7 +58,8 @@ json rpc::RPC::GetHealth(int id)
 
     Stellar *stellar = new Stellar();
     auto getHealth = stellar->stellar_forward_call(baseurl, params);
-    if(getHealth == std::nullopt){
+    if (getHealth == std::nullopt)
+    {
         stellar->Log("empty data returned", {});
         return {};
     }
@@ -71,7 +76,8 @@ json rpc::RPC::GetLatestLedger(int id)
 
     Stellar *stellar = new Stellar();
     auto getLatestLedger = stellar->stellar_forward_call(baseurl, params);
-    if(getLatestLedger == std::nullopt){
+    if (getLatestLedger == std::nullopt)
+    {
         stellar->Log("empty data returned", {});
         return {};
     }
@@ -89,12 +95,14 @@ GetNetworkDataResponse rpc::RPC::GetNetwork(int id)
     Stellar *stellar = new Stellar();
     stellar->Log("GetNetwork_Payload", params);
     auto getNetwork = stellar->stellar_forward_call(baseurl, params);
-    if(getNetwork == std::nullopt){
+    if (getNetwork == std::nullopt)
+    {
         stellar->Log("empty data returned", {});
         return {};
     }
-    auto eventResp = json::parse(getNetwork); Response response;
-    stellar->Log("GetNetworkEvent_Resp",eventResp);
+    auto eventResp = json::parse(getNetwork);
+    Response response;
+    stellar->Log("GetNetworkEvent_Resp", eventResp);
     auto NetworkDataResponse = response.GetNetworkResponse(eventResp);
     return NetworkDataResponse;
 }
@@ -110,7 +118,8 @@ json rpc::RPC::GetTransaction(int txId, std::string txHash)
 
     Stellar *stellar = new Stellar();
     auto getTransaction = stellar->stellar_forward_call(baseurl, params);
-    if(getTransaction == std::nullopt){
+    if (getTransaction == std::nullopt)
+    {
         stellar->Log("empty data returned", {});
         return {};
     }
@@ -121,16 +130,17 @@ json rpc::RPC::GetTransaction(int txId, std::string txHash)
 json rpc::RPC::GetTransactions(int id, int startLedger, int pagelimit)
 {
     json params;
-    params["jsonrpc"] ="2.0";
+    params["jsonrpc"] = "2.0";
     params["id"] = id;
     params["method"] = "getTransactions";
-    params["params"] = {"startLedger",startLedger};
-    params["params"]["pagination"] = {"limit",pagelimit};
+    params["params"] = {"startLedger", startLedger};
+    params["params"]["pagination"] = {"limit", pagelimit};
 
-    Stellar* stellar = new Stellar();
+    Stellar *stellar = new Stellar();
     stellar->Log("GetTransactions_Payload", params);
     auto getTransactions = stellar->stellar_forward_call(baseurl, params);
-    if(getTransactions == std::nullopt) {
+    if (getTransactions == std::nullopt)
+    {
         stellar->Log("empty data returned", {});
         return {};
     }
@@ -138,22 +148,24 @@ json rpc::RPC::GetTransactions(int id, int startLedger, int pagelimit)
     return txResp;
 }
 
-json rpc::RPC::SendTransactions(int id, std::string txHash){
+json rpc::RPC::SendTransactions(int id, std::string txHash)
+{
     json params;
-    params["jsonrpc"] ="2.0";
+    params["jsonrpc"] = "2.0";
     params["id"] = id;
     params["method"] = "sendTransaction";
-    params["params"] = {"transaction",txHash};
+    params["params"] = {"transaction", txHash};
 
-    Stellar* stellar = new Stellar();
+    Stellar *stellar = new Stellar();
     stellar->Log("sendTransaction_Payload", params);
     auto sendTransaction = stellar->stellar_forward_call(baseurl, params);
-    if(sendTransaction == std::nullopt){
+    if (sendTransaction == std::nullopt)
+    {
         stellar->Log("empty data returned", {});
         return {};
     }
     auto sendTxResp = json::parse(sendTransaction);
-    return sendTxResp; 
+    return sendTxResp;
 }
 
 json rpc::RPC::GetLedgerEntries(int id, json LedgerParams)
@@ -166,7 +178,8 @@ json rpc::RPC::GetLedgerEntries(int id, json LedgerParams)
 
     Stellar *stellar = new Stellar();
     auto getLedgerEntries = stellar->stellar_forward_call(baseurl, params);
-    if(getLedgerEntries == std::nullopt) {
+    if (getLedgerEntries == std::nullopt)
+    {
         stellar->Log("empty data returned", {});
         return {};
     }

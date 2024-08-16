@@ -9,7 +9,28 @@
 
 #include "../base.hpp"
 
-struct GetEventsDataEvents {
+void LogGreen(const char *msg)
+{
+    std::cout << "NitrogenData_Log\n";
+    std::cout << msg << std::endl;
+}
+
+void LogRed(const char *msg)
+{
+    std::cerr << msg << std::endl;
+    std::cout << msg << std::endl;
+    perror(msg);
+    exit(EXIT_FAILURE);
+}
+
+void LogRunError(const char *msg)
+{
+    perror(msg);
+    throw std::runtime_error(msg);
+}
+
+struct GetEventsDataEvents
+{
     std::string type;
     uint32_t ledger;
     std::string ledgerClosedAt;
@@ -22,34 +43,40 @@ struct GetEventsDataEvents {
     std::string txHash;
 };
 
-struct GetEventDataResult {
+struct GetEventDataResult
+{
     std::vector<GetEventsDataResponse> events;
     uint32_t latestLedger;
 };
 
-struct GetEventsDataResponse{
+struct GetEventsDataResponse
+{
     std::string jsonrpc;
     uint16_t id;
     GetEventDataResult result;
 };
 
-struct GetNetworkDataResult {
+struct GetNetworkDataResult
+{
     std::string friendbotUrl;
     std::string passphrase;
     uint32_t protocolVersion;
 };
 
-struct GetNetworkDataResponse {
+struct GetNetworkDataResponse
+{
     std::string jsonrpc;
     uint32_t id;
     GetNetworkDataResult result;
 };
 
-struct GetFeeStatsResult {
+struct GetFeeStatsResult
+{
     std::vector<GetSorobanInclusionFee> sorobanInclusionFee;
 };
 
-struct GetSorobanInclusionFee {
+struct GetSorobanInclusionFee
+{
     std::string max;
     std::string min;
     std::string mode;
@@ -68,19 +95,21 @@ struct GetSorobanInclusionFee {
     uint32_t ledgerCount;
 };
 
-struct GetFeeStats {
+struct GetFeeStats
+{
     std::string jsonrpc;
     uint32_t id;
     GetFeeStatsResult result;
 };
 
-class Response {
-    public:
+class Response
+{
+public:
     Response();
-    GetEventsDataResponse GetEventsResponse(json getEvents); 
+    GetEventsDataResponse GetEventsResponse(json getEvents);
     GetNetworkDataResponse GetNetworkResponse(json getNetwork);
     GetFeeStats GetFeeStatsResponse(json getFeeStats);
-    ~Response();  
+    ~Response();
 };
 
 #endif
