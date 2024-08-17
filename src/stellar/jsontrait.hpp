@@ -1,5 +1,40 @@
 #include "rpc_resp.hpp"
 
+
+void from_json(const json& j, GetLedgeEntries& e) 
+{
+    j.at("key").get_to(e.key);
+    j.at("xdr").get_to(e.xdr);
+    j.at("lastModifiedLedgerSeq").get_to(e.lastModifiedLedgerSeq);
+}
+
+void from_json(const json& j, GetLedgerEntryResult& e)
+{
+    j.at("entries").get_to(e.entries);
+    j.at("latestLedger").get_to(e.latestLedger);
+}
+
+void from_json(const json& j, GetLedgerEntriesResponse& e)
+{
+    j.at("jsonrpc").get_to(e.jsonrpc);
+    j.at("id").get_to(e.id);
+    j.at("result").get_to(e.result);
+}
+
+void from_json(const json& j, GetLatestLedgerResult& e)
+{
+    j.at("id").get_to(e.id);
+    j.at("protocolVersion").get_to(e.protocolversion);
+    j.at("sequence").get_to(e.sequence);
+}
+
+void from_json(const json& j, GetLatestLedgerResponse& e)
+{
+    j.at("jsonrpc").get_to(e.jsonrpc);
+    j.at("id").get_to(e.id);
+    j.at("result").get_to(e.result);
+}
+
 void from_json(const json& j,GetHealthResult& e)
 {
     j.at("health").get_to(e.health);

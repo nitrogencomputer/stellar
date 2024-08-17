@@ -40,10 +40,14 @@ namespace rpc {
         GetHealthDataResponse GetHealth(int id);
 
         /* Get Latest Ledger */
-        json GetLatestLedger(int id);
+        GetLatestLedgerResponse GetLatestLedger(int id);
 
         /* Get Network */
         GetNetworkDataResponse GetNetwork(int id);
+
+
+        /* Get Ledger Entries */
+        GetLedgerEntriesResponse GetLedgerEntries(int id, json params);
 
         /* Get Transaction */
         json GetTransaction(int txId, std::string txHash);
@@ -55,8 +59,6 @@ namespace rpc {
         /* send a transaction on stellar blockchain */
         json SendTransactions(int id, std::string txHash);
 
-        /* Get Ledger Entries */
-        json GetLedgerEntries(int id, json params);
     };
 }
 
