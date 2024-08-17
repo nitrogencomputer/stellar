@@ -37,7 +37,7 @@ namespace rpc {
         GetFeeStats GetFeeStats(int id);
 
         /* Get Health */
-        json GetHealth(int id);
+        GetHealthDataResponse GetHealth(int id);
 
         /* Get Latest Ledger */
         json GetLatestLedger(int id);

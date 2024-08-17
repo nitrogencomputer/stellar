@@ -1,5 +1,20 @@
 #include "rpc_resp.hpp"
 
+void from_json(const json& j,GetHealthResult& e)
+{
+    j.at("health").get_to(e.health);
+    j.at("latestLedger").get_to(e.latestLedger);
+    j.at("oldestLedger").get_to(e.oldestLedger);
+    j.at("ledgerRentionWindow").get_to(e.ledgerRetentionWindow);
+}
+
+void from_json(const json& j, GetHealthDataResponse& e)
+{
+    j.at("jsonprc").get_to(e.jsonrpc);
+    j.at("id").get_to(e.id);
+    j.at("result").get_to(e.result);
+}
+
 void from_json(const json& j, GetSorobanInclusionFee& e){
     j.at("max").get_to(e.max);
     j.at("min").get_to(e.min);

@@ -49,7 +49,7 @@ GetFeeStats rpc::RPC::GetFeeStats(int id)
     return feeStatsData;
 }
 
-json rpc::RPC::GetHealth(int id)
+GetHealthDataResponse rpc::RPC::GetHealth(int id)
 {
     json params;
     params["id"] = id;
@@ -63,8 +63,9 @@ json rpc::RPC::GetHealth(int id)
         stellar->Log("empty data returned", {});
         return {};
     }
-    auto eventResp = json::parse(getHealth);
-    return eventResp;
+    auto eventResp = json::parse(getHealth); Response response;
+    auto healthstats = response.GetHealthResponse(eventResp);
+    return healthstats;
 }
 
 json rpc::RPC::GetLatestLedger(int id)
