@@ -68,7 +68,7 @@ GetHealthDataResponse rpc::RPC::GetHealth(int id)
     return healthstats;
 }
 
-json rpc::RPC::GetLatestLedger(int id)
+GetLatestLedgerResponse rpc::RPC::GetLatestLedger(int id)
 {
     json params;
     params["id"] = id;
@@ -82,8 +82,9 @@ json rpc::RPC::GetLatestLedger(int id)
         stellar->Log("empty data returned", {});
         return {};
     }
-    auto eventResp = json::parse(getLatestLedger);
-    return eventResp;
+    auto eventResp = json::parse(getLatestLedger);Response response;
+    auto latestLedger = response.GetLatestLedgers(eventResp);
+    return latestLedger;
 }
 
 GetNetworkDataResponse rpc::RPC::GetNetwork(int id)
@@ -106,6 +107,26 @@ GetNetworkDataResponse rpc::RPC::GetNetwork(int id)
     stellar->Log("GetNetworkEvent_Resp", eventResp);
     auto NetworkDataResponse = response.GetNetworkResponse(eventResp);
     return NetworkDataResponse;
+}
+
+GetLedgerEntriesResponse rpc::RPC::GetLedgerEntries(int id, json LedgerParams)
+{
+    json params;
+    params["id"] = id;
+    params["jsonrpc"] = "2.0";
+    params["method"] = "getLedgerEntries";
+    params["params"] = LedgerParams;
+
+    Stellar *stellar = new Stellar();
+    auto getLedgerEntries = stellar->stellar_forward_call(baseurl, params);
+    if (getLedgerEntries == std::nullopt)
+    {
+        stellar->Log("empty data returned", {});
+        return {};
+    }
+    auto eventResp = json::parse(getLedgerEntries);Response response;
+    auto ledgerEntries = response.GetLedgerEntries(eventResp);
+    return ledgerEntries;
 }
 
 json rpc::RPC::GetTransaction(int txId, std::string txHash)
@@ -169,21 +190,3 @@ json rpc::RPC::SendTransactions(int id, std::string txHash)
     return sendTxResp;
 }
 
-json rpc::RPC::GetLedgerEntries(int id, json LedgerParams)
-{
-    json params;
-    params["id"] = id;
-    params["jsonrpc"] = "2.0";
-    params["method"] = "getLedgerEntries";
-    params["params"] = LedgerParams;
-
-    Stellar *stellar = new Stellar();
-    auto getLedgerEntries = stellar->stellar_forward_call(baseurl, params);
-    if (getLedgerEntries == std::nullopt)
-    {
-        stellar->Log("empty data returned", {});
-        return {};
-    }
-    auto eventResp = json::parse(getLedgerEntries);
-    return eventResp;
-}
